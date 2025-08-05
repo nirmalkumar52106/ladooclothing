@@ -121,7 +121,7 @@ app.get("/api/products/all", async (req, res) => {
   }
 });
 
-app.get('/api/products/:slugurl', async (req, res) => {
+app.get('/api/productsbyurl/:slugurl', async (req, res) => {
   try {
     const slug = req.params.slugurl;
     const product = await Product.findOne({ slugurl: slug });
@@ -137,7 +137,7 @@ app.get('/api/products/:slugurl', async (req, res) => {
   }
 });
 
-app.get("/api/products/:id", async (req, res) => {
+app.get("/api/products/all/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     res.json(product);
