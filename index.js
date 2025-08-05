@@ -18,6 +18,10 @@ mongoose.connect("mongodb+srv://kumarnirmal52106:Dk5Ys59mDh1kEb9o@cluster0.9dptf
 .then(() => console.log("✅ MongoDB Connected"))
 .catch((err) => console.error("❌ MongoDB Error:", err));
 
+app.get("/" , (req,res)=>{
+res.send("Hello")
+})
+
 // === Models ===
 const userSchema = new mongoose.Schema({
   name: String,
