@@ -39,6 +39,10 @@ const productSchema = new mongoose.Schema({
   size: String,
   image: String,
   category: String,
+  metatile : String,
+  metadescription : String,
+  metakeyword :  String,
+  slugurl :  String,
   createdAt: { type: Date, default: Date.now },
 });
 const Product = mongoose.model("Product", productSchema);
@@ -114,6 +118,22 @@ app.get("/api/products/all", async (req, res) => {
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch products" });
+  }
+});
+
+app.get('/api/products/:slugurl', async (req, res) => {
+  try {
+    const slug = req.params.slugurl;
+    const product = await Product.findOne({ slugurl: slug });
+
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.json(product);
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 
