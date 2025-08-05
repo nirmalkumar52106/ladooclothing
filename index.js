@@ -72,6 +72,15 @@ app.post("/api/auth/register", async (req, res) => {
   }
 });
 
+app.get("/api/auth/users", async (req, res) => {
+  try {
+    const users = await User.find(); 
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch users", details: err.message });
+  }
+});
+
 app.post("/api/auth/login", async (req, res) => {
   try {
     const { email, password } = req.body;
