@@ -28,7 +28,7 @@ const TourPackageSchema = new mongoose.Schema({
   metaTitle: { type: String },
   metaDescription: { type: String },
   metaKeywords: { type: [String] },
-  slug: { type: String, unique: true, required: true },
+  slug: { type: String },
 }, { timestamps: true });
 
 TourPackageSchema.pre("save", function (next) {
