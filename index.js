@@ -207,6 +207,47 @@ app.post("/package/add/new", async (req, res) => {
 });
 
 
+app.get("/tours", async (req, res) => {
+  try {
+    const packages = await Tour.find();
+    res.json({ success: true, data: packages });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+
+app.delete("/tours/:id", async (req, res) => {
+  try {
+    await Tour.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: "Package deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.put("/tours/:id", async (req, res) => {
+  try {
+    const updatedPackage = await TourPackage.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json({ success: true, message: "Package updated successfully", data: updatedPackage });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+});
+
+
+app.get("/tours/:slug", async (req, res) => {
+  try {
+    const packageData = await Tour.findOne({ slug: req.params.slug });
+    if (!packageData) {
+      return res.status(404).json({ success: false, message: "Package not found" });
+    }
+    res.json({ success: true, data: packageData });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 
 
 // === Start Server ===

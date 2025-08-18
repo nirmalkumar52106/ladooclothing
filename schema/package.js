@@ -24,7 +24,21 @@ const TourPackageSchema = new mongoose.Schema({
   include: { type: [String] },         // list of included items
   exclude: { type: [String] },         // list of excluded items
   tourPlanMainHeading: { type: String },
+  metaTitle: { type: String },
+  metaDescription: { type: String },
+  metaKeywords: { type: [String] },
+  slug: { type: String, unique: true, required: true },
 }, { timestamps: true });
+
+TourPackageSchema.pre("save", function (next) {
+  if (!this.slug && this.packageTitle) {
+    this.slug = this.packageTitle
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)+/g, "");
+  }
+  next();
+});
 
 const Tour = mongoose.model("TourPackage", TourPackageSchema);
 module.exports = Tour
