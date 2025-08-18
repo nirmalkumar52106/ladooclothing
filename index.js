@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const Tour = require("./schema/package");
 
 
 const app = express();
@@ -101,6 +102,32 @@ app.post("/api/auth/login", async (req, res) => {
   }
 });
 
+
+const verifyToken = async (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1]; // format: "Bearer token"
+  if (!token) return res.status(401).json({ message: "Access denied" });
+
+  try {
+    const decoded = jwt.verify(token, 'ladoogopal123443' );
+    req.user = decoded; 
+    next();
+  } catch (err) {
+    return res.status(401).json({ message: "Invalid token" });
+  }
+};
+
+// route to get user profile
+app.get("/api/auth/profile", verifyToken, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch profile" });
+  }
+});
+
 // === Product Routes ===
 app.post("/api/products/add", async (req, res) => {
   try {
@@ -165,6 +192,22 @@ app.get("/api/orders/user/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch orders" });
   }
 });
+
+
+
+//tour backend
+app.post("/package/add/new", async (req, res) => {
+  try {
+    const packageData = new Tour(req.body);
+    await packageData.save();
+    res.status(201).json({ success: true, message: "Package added successfully", data: packageData });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+});
+
+
+
 
 // === Start Server ===
 const PORT =  5000;
