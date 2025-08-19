@@ -245,7 +245,7 @@ app.delete("/tours/:id", async (req, res) => {
 
 app.patch("/tours/:id", async (req, res) => {
   try {
-    const updatedPackage = await TourPackage.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const updatedPackage = await Tour.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json({ success: true, message: "Package updated successfully", data: updatedPackage });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
