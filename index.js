@@ -243,7 +243,7 @@ app.delete("/tours/:id", async (req, res) => {
   }
 });
 
-app.put("/tours/:id", async (req, res) => {
+app.patch("/tours/:id", async (req, res) => {
   try {
     const updatedPackage = await TourPackage.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json({ success: true, message: "Package updated successfully", data: updatedPackage });
