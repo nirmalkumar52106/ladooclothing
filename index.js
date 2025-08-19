@@ -217,6 +217,23 @@ app.get("/tours", async (req, res) => {
 });
 
 
+app.get("/findtours/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const package = await Tour.findById(id);
+
+    if (!package) {
+      return res.status(404).json({ success: false, message: "Tour not found" });
+    }
+
+    res.json({ success: true, data: package });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+})
+
+
+
 app.delete("/tours/:id", async (req, res) => {
   try {
     await Tour.findByIdAndDelete(req.params.id);
