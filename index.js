@@ -209,7 +209,7 @@ app.post("/package/add/new", async (req, res) => {
 
 app.get("/tours", async (req, res) => {
   try {
-    const packages = await Tour.find();
+    const packages = await Tour.find({});
     res.json({ success: true, data: packages });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
