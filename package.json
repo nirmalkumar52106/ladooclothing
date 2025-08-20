@@ -10,5 +10,5 @@
     "multer": "^2.0.2",
     "multer-storage-cloudinary": "^4.0.0",
     "nodemon": "^3.1.10"
-  }
+  } 
 }
