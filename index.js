@@ -197,43 +197,43 @@ app.get("/api/orders/user/:id", async (req, res) => {
 
 
 //tour backend
-// app.post("/package/add/new", async (req, res) => {
-//   try {
-//     const packageData = new Tour(req.body);
-//     await packageData.save();
-//     res.status(201).json({ success: true, message: "Package added successfully", data: packageData });
-//   } catch (error) {
-//     res.status(400).json({ success: false, message: error.message });
-//   }
-// });
-
-app.post(
-  "/package/add/new",
-  upload.fields([
-    { name: "image", maxCount: 1 },
-    { name: "image1", maxCount: 1 },
-    { name: "image2", maxCount: 1 },
-    { name: "image3", maxCount: 1 },
-    { name: "image4", maxCount: 1 },
-  ]),
-  async (req, res) => {
-    try {
-      const newTour = new Tour({
-        ...req.body,
-        image: req.files?.image ? req.files.image[0].path : null,
-        image1: req.files?.image1 ? req.files.image1[0].path : null,
-        image2: req.files?.image2 ? req.files.image2[0].path : null,
-        image3: req.files?.image3 ? req.files.image3[0].path : null,
-        image4: req.files?.image4 ? req.files.image4[0].path : null,
-      });
-
-      await newTour.save();
-      res.json({ success: true, data: newTour });
-    } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
-    }
+app.post("/package/add/new", async (req, res) => {
+  try {
+    const packageData = new Tour(req.body);
+    await packageData.save();
+    res.status(201).json({ success: true, message: "Package added successfully", data: packageData });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
   }
-);
+});
+
+// app.post(
+//   "/package/add/new",
+//   upload.fields([
+//     { name: "image", maxCount: 1 },
+//     { name: "image1", maxCount: 1 },
+//     { name: "image2", maxCount: 1 },
+//     { name: "image3", maxCount: 1 },
+//     { name: "image4", maxCount: 1 },
+//   ]),
+//   async (req, res) => {
+//     try {
+//       const newTour = new Tour({
+//         ...req.body,
+//         image: req.files?.image ? req.files.image[0].path : null,
+//         image1: req.files?.image1 ? req.files.image1[0].path : null,
+//         image2: req.files?.image2 ? req.files.image2[0].path : null,
+//         image3: req.files?.image3 ? req.files.image3[0].path : null,
+//         image4: req.files?.image4 ? req.files.image4[0].path : null,
+//       });
+
+//       await newTour.save();
+//       res.json({ success: true, data: newTour });
+//     } catch (err) {
+//       res.status(500).json({ success: false, error: err.message });
+//     }
+//   }
+// );
 
 
 app.get("/tours", async (req, res) => {
