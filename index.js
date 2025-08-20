@@ -5,7 +5,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Tour = require("./schema/package");
-const upload = require("./middleware/upload");
+
 
 
 const app = express();
