@@ -19,7 +19,6 @@ const TourPackageSchema = new mongoose.Schema(
     packageTitle: { type: String, required: true },
     duration: Number,
     price: PriceSchema,
-    pickuplocation : String,
     locationurl : String,
     image1: { type: String },
     image2: { type: String },
