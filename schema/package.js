@@ -57,5 +57,6 @@ TourPackageSchema.pre("save", function (next) {
   next();
 });
 
+
 const Tour = mongoose.model("TourPackage", TourPackageSchema);
 module.exports = Tour;
