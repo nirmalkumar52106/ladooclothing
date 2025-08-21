@@ -344,7 +344,7 @@ app.post("/package/booking", async (req, res) => {
 app.get("/allbookings", async (req, res) => {
   try {
     const bookings = await Booking.find()
-      .populate("tour", "packageTitle location price duration image") // Tour ka data
+      .populate("tour", "packageTitle location price duration image destinationType") // Tour ka data
       .populate("user", "name email phone") // User ka data (sirf name aur email le rahe hain)
       .sort({ createdAt: -1 }); // Latest bookings pehle
 
