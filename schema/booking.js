@@ -2,10 +2,7 @@ const mongoose = require("mongoose");
 
 const BookingSchema = new mongoose.Schema(
   {
-    tour: { type: mongoose.Schema.Types.ObjectId, ref: "TourPackage", required: true }, // booked tour
-    name: { type: String, required: false },        // customer name
-    email: { type: String, required: false },       // customer email
-    phone: { type: String, required: false },       // customer phone
+    tour: { type: mongoose.Schema.Types.ObjectId, ref: "TourPackage", required: true },
     members: { type: Number, required: false },     // total members
     travelDate: { type: Date, required: false },    // selected travel date
     pickupLocation: { type: String },              // optional pickup point

@@ -331,7 +331,7 @@ app.get("/tours/:slug", async (req, res) => {
 
 //booking
 app.post("/package/booking", async (req, res) => {
-  try {
+  try { 
     const booking = new Booking(req.body);
     await booking.save();
     res.status(201).json({ success: true, data: booking });
@@ -343,7 +343,11 @@ app.post("/package/booking", async (req, res) => {
 //allbooking
 app.get("/allbookings", async (req, res) => {
   try {
-    const bookings = await Booking.find().populate("tour");
+    const bookings = await Booking.find()
+      .populate("tour", "packageTitle location price duration image") // Tour ka data
+      .populate("user", "name email phone") // User ka data (sirf name aur email le rahe hain)
+      .sort({ createdAt: -1 }); // Latest bookings pehle
+
     res.json({ success: true, data: bookings });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
