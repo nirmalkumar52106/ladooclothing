@@ -393,6 +393,44 @@ app.get("/user/:userId", async (req, res) => {
 });
 
 
+app.get("/dashboard/bookings", async (req, res) => {
+  try {
+    const bookings = await Booking.find()
+      .populate("user", "name email phone") // user details
+      .populate("tour", "packageTitle location price duration image") // tour details
+      .sort({ createdAt: -1 });
+
+    res.json(bookings);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch bookings", details: err.message });
+  }
+});
+
+
+app.put("/api/bookings/:id/status", async (req, res) => {
+  try {
+    const { status } = req.body; // new status from frontend
+    if (!["Pending", "Confirmed", "Cancelled"].includes(status)) {
+      return res.status(400).json({ error: "Invalid status value" });
+    }
+
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    )
+      .populate("user", "name email")
+      .populate("tour", "packageTitle location");
+
+    if (!booking) return res.status(404).json({ error: "Booking not found" });
+
+    res.json({ message: "Booking status updated", booking });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update booking", details: err.message });
+  }
+});
+
+
 // === Start Server ===
 const PORT =  5000;
 app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
