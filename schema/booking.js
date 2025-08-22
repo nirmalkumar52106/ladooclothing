@@ -8,6 +8,7 @@ const BookingSchema = new mongoose.Schema(
     pickupLocation: { type: String },              // optional pickup point
     specialRequest: { type: String },
     totalprice : Number,
+    userlocate : String,
     adultcount : Number,
     childrencount :  Number,
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },           // optional message
