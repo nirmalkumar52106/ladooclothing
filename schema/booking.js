@@ -6,7 +6,11 @@ const BookingSchema = new mongoose.Schema(
     members: { type: Number, required: false },     // total members
     travelDate: { type: Date, required: false },    // selected travel date
     pickupLocation: { type: String },              // optional pickup point
-    specialRequest: { type: String },   
+    specialRequest: { type: String },
+    totalprice : Number,
+    totalmember :  Number,
+    adultcount : Number,   
+    childrencount :  Number,
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },           // optional message
 
     status: {
