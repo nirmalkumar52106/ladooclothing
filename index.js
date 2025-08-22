@@ -447,7 +447,7 @@ app.get("/dashboard/bookings", async (req, res) => {
 });
 
 
-app.put("/api/bookings/:id/status", async (req, res) => {
+app.patch("/api/bookings/:id/status", async (req, res) => {
   try {
     const { status } = req.body; // new status from frontend
     if (!["Pending", "Confirmed", "Cancelled"].includes(status)) {
