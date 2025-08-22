@@ -30,9 +30,11 @@ const userSchema = new mongoose.Schema({
   name: String,
   email: { type: String, unique: true },
   password: String,
-  phone : String,
+  phone: String,
   isAdmin: { type: Boolean, default: false },
+  isActive: { type: Boolean, default: true }  // ✅ new field for deactivate/activate
 });
+
 const User = mongoose.model("User", userSchema);
 
 const productSchema = new mongoose.Schema({
@@ -79,6 +81,35 @@ app.post("/api/auth/register", async (req, res) => {
   }
 });
 
+
+app.put("/user/:id/deactivate", async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { isActive: false },
+      { new: true }
+    );
+    res.json({ success: true, message: "User deactivated", user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+
+app.put("/user/:id/activate", async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.id,
+      { isActive: true },
+      { new: true }
+    );
+    res.json({ success: true, message: "User activated", user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+
 app.get("/api/auth/users", async (req, res) => {
   try {
     const users = await User.find(); 
@@ -95,6 +126,11 @@ app.post("/api/auth/login", async (req, res) => {
     // check if user exists
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ error: "User not found" });
+
+    // check if user is active
+    if (!user.isActive) {
+      return res.status(403).json({ error: "Your account is deactivated. Please contact admin." });
+    }
 
     // check password
     const isMatch = await bcrypt.compare(password, user.password);
@@ -116,6 +152,7 @@ app.post("/api/auth/login", async (req, res) => {
         email: user.email,
         phone: user.phone,
         isAdmin: user.isAdmin || false,
+        isActive: user.isActive   // ✅ include active status too
       },
     });
   } catch (err) {
@@ -123,7 +160,6 @@ app.post("/api/auth/login", async (req, res) => {
     res.status(500).json({ error: "Login failed" });
   }
 });
-
 
 const verifyToken = async (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1]; // format: "Bearer token"
