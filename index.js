@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const Tour = require("./schema/package");
 const Booking = require("./schema/booking");
+const User = require("./schema/user");
+const Product = require("./schema/product");
 
 
 const app = express();
@@ -14,9 +16,10 @@ app.use(express.json());
 
 // === Connect MongoDB ===
 mongoose.connect("mongodb+srv://kumarnirmal52106:Dk5Ys59mDh1kEb9o@cluster0.9dptf2l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
+  family : 4,
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  family  : 4,
+  
 })
 .then(() => console.log("✅ MongoDB Connected"))
 .catch((err) => console.error("❌ MongoDB Error:", err));
@@ -25,48 +28,11 @@ app.get("/" , (req,res)=>{
 res.send("Hello")
 })
 
-// === Models ===
-const userSchema = new mongoose.Schema({
-  name: String,
-  email: { type: String, unique: true },
-  password: String,
-  phone: String,
-  isAdmin: { type: Boolean, default: false },
-  isActive: { type: Boolean, default: true }  // ✅ new field for deactivate/activate
-});
 
-const User = mongoose.model("User", userSchema);
 
-const productSchema = new mongoose.Schema({
-  title: String,
-  description: String,
-  price: Number,
-  size: String,
-  image: String,
-  category: String,
-  metatile : String,
-  metadescription : String,
-  metakeyword :  String,
-  slugurl :  String,
-  createdAt: { type: Date, default: Date.now },
-});
-const Product = mongoose.model("Product", productSchema);
 
-const orderSchema = new mongoose.Schema({
-  userId: String,
-  items: [
-    {
-      productId: String,
-      quantity: Number,
-    },
-  ],
-  address: String,
-  totalAmount: Number,
-  paymentMethod: { type: String, default: "COD" },
-  status: { type: String, default: "Pending" },
-  createdAt: { type: Date, default: Date.now },
-});
-const Order = mongoose.model("Order", orderSchema);
+
+
 
 // === User Auth Routes ===
 app.post("/api/auth/register", async (req, res) => {
