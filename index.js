@@ -21,7 +21,7 @@ mongoose.connect("mongodb+srv://kumarnirmal52106:Dk5Ys59mDh1kEb9o@cluster0.9dptf
   useUnifiedTopology: true,
   
 })
-.then(() => console.log("✅ MongoDB Connected"))
+.then(() => console.log("✅ MongoDB Connectedd"))
 .catch((err) => console.error("❌ MongoDB Error:", err));
 
 app.get("/" , (req,res)=>{
