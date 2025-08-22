@@ -82,7 +82,7 @@ app.post("/api/auth/register", async (req, res) => {
 });
 
 
-app.put("/user/:id/deactivate", async (req, res) => {
+app.patch("/user/:id/deactivate", async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(
       req.params.id,
@@ -96,7 +96,7 @@ app.put("/user/:id/deactivate", async (req, res) => {
 });
 
 
-app.put("/user/:id/activate", async (req, res) => {
+app.patch("/user/:id/activate", async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(
       req.params.id,
