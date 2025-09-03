@@ -8,6 +8,7 @@ const Tour = require("./schema/package");
 const Booking = require("./schema/booking");
 const User = require("./schema/user");
 const Product = require("./schema/product");
+const TourEnquiry = require("./schema/enquiry");
 
 
 const app = express();
@@ -433,6 +434,130 @@ app.patch("/api/bookings/:id/status", async (req, res) => {
     res.json({ message: "Booking status updated", booking });
   } catch (err) {
     res.status(500).json({ error: "Failed to update booking", details: err.message });
+  }
+});
+
+
+//goodluck enquiry
+app.post("/api/tour/enquiry/add", async (req, res) => {
+  try {
+    const { name, email, mobile, location, comment, date } = req.body;
+
+    if (!name || !email || !mobile) {
+      return res.status(400).json({ message: "Name, Email & Mobile required" });
+    }
+
+    const newEnquiry = new TourEnquiry({ name, email, mobile, location, comment, date });
+    await newEnquiry.save();
+
+    res.status(201).json({ message: "Enquiry created", enquiry: newEnquiry });
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
+});
+
+
+// ------------------------
+// POST: Add Enquiry
+// ------------------------
+app.post("/api/tour/enquiry/add", async (req, res) => {
+  try {
+    const { name, email, mobile, location, comment, date } = req.body;
+
+    if (!name || !email || !mobile) {
+      return res.status(400).json({ message: "Name, Email & Mobile required" });
+    }
+
+    const newEnquiry = new TourEnquiry({ name, email, mobile, location, comment, date });
+    await newEnquiry.save();
+
+    res.status(201).json({ message: "Enquiry created", enquiry: newEnquiry });
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
+});
+
+// ------------------------
+// GET: All Enquiries
+// ------------------------
+app.get("/api/tour/enquiry", async (req, res) => {
+  try {
+    const enquiries = await TourEnquiry.find().sort({ createdAt: -1 });
+    res.json(enquiries);
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
+});
+
+// ------------------------
+// GET: Single Enquiry by ID
+// ------------------------
+app.get("/api/tour/enquiry/:id", async (req, res) => {
+  try {
+    const enquiry = await TourEnquiry.findById(req.params.id);
+    if (!enquiry) return res.status(404).json({ message: "Enquiry not found" });
+
+    res.json(enquiry);
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
+});
+
+// ------------------------
+// PATCH: Update Enquiry
+// ------------------------
+app.patch("/api/tour/enquiry/:id", async (req, res) => {
+  try {
+    const updatedEnquiry = await TourEnquiry.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true } // return updated doc
+    );
+
+    if (!updatedEnquiry) return res.status(404).json({ message: "Enquiry not found" });
+
+    res.json({ message: "Enquiry updated", enquiry: updatedEnquiry });
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
+});
+
+// ------------------------
+// DELETE: Enquiry
+// ------------------------
+app.delete("/api/tour/enquiry/:id", async (req, res) => {
+  try {
+    const deletedEnquiry = await TourEnquiry.findByIdAndDelete(req.params.id);
+
+    if (!deletedEnquiry) return res.status(404).json({ message: "Enquiry not found" });
+
+    res.json({ message: "Enquiry deleted" });
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
+  }
+});
+
+app.get("/api/tour/enquiry/filter", async (req, res) => {
+  try {
+    const { from, to } = req.query;
+
+    if (!from || !to) {
+      return res.status(400).json({ message: "From and To dates required (YYYY-MM-DD)" });
+    }
+
+    const start = new Date(from);
+    const end = new Date(to);
+
+    // ✅ Ensure end date includes the full day
+    end.setHours(23, 59, 59, 999);
+
+    const enquiries = await TourEnquiry.find({
+      date: { $gte: start, $lte: end }
+    }).sort({ date: -1 });
+
+    res.json(enquiries);
+  } catch (err) {
+    res.status(500).json({ message: "Server Error", error: err.message });
   }
 });
 
