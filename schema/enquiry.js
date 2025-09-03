@@ -10,5 +10,5 @@ const enquirySchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
-const TourEnquiry = mongoose.model("GoodLuckEnquiry", orderSchema);
+const TourEnquiry = mongoose.model("GoodLuckEnquiry", enquirySchema);
 module.exports = TourEnquiry
