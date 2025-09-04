@@ -368,6 +368,31 @@ app.get("/allbookings/:id", async (req, res) => {
   }
 });
 
+app.get("/popular-tours", async (req, res) => {
+  try {
+    const popularTours = await Booking.aggregate([
+      {
+        $group: {
+          _id: "$tour",              // group by tour id
+          totalBookings: { $sum: 1 } // count bookings
+        }
+      },
+      { $sort: { totalBookings: -1 } }, // sort by booking count
+      { $limit: 3 }                     // top 3
+    ]);
+
+    // Ab in tour IDs ke details laane ke liye populate karte hain
+    const tours = await Tour.find({
+      _id: { $in: popularTours.map((t) => t._id) }
+    });
+
+    res.status(200).json({ success: true, data: tours });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+});
+
 //update booking
 app.patch("/updatebooking/:id", async (req, res) => {
   try {

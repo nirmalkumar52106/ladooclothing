@@ -18,6 +18,9 @@ const TourPackageSchema = new mongoose.Schema(
     location: { type: String, required: true },
     packageTitle: { type: String, required: true },
     duration: Number,
+    daycount : Number,
+    nightcount :  Number,
+    tourtype :  String,
     price: PriceSchema,
     locationurl : String,
     image1: { type: String },
@@ -27,6 +30,7 @@ const TourPackageSchema = new mongoose.Schema(
     youtubeLink: { type: String },
     destinationType: { type: String },
     memberSize: { type: Number },
+
     aboutPackage: { type: String },
     tripHighlight: { type: [String] }, // multiple highlights
     include: { type: [String] },       // list of included items
