@@ -1,9 +1,8 @@
 const mongoose = require("mongoose");
 
 const PriceSchema = new mongoose.Schema({
-  adult: { type: Number, required: true },
-  youth: { type: Number, required: true },
-  children: { type: Number, required: true },
+  adult: { type: Number },
+  children: { type: Number },
 });
 
 // Tour Plan Schema (Day-wise accordion)
