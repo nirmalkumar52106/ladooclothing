@@ -389,7 +389,7 @@ app.get("/popular-tours", async (req, res) => {
     res.status(200).json({ success: true, data: tours });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(500).json({ success: false, message: "Server Error no data found" });
   }
 });
 
